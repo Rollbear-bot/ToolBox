@@ -13,6 +13,15 @@ class Pict:
         self.location = location
         self.src, self.alt, self.style = Pict.pict_tag_parser(raw_tag)
 
+    def migrate(self, new_path: str):
+        """将当前图片的源迁移到另一个目录"""
+        self.src = new_path
+        self.raw_tag = "<img src=\"" + self.src + "\" alt=\"" + self.alt
+        if self.style == "":
+            self.raw_tag += "\" />"
+        else:
+            self.raw_tag += "\" style=\"" + self.style + "\" />"
+
     @staticmethod
     def pict_tag_parser(raw_tag: str):
         """图片标签解析器"""

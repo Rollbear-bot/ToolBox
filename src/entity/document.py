@@ -56,3 +56,16 @@ class Document:
         clone.raw_lines = self.raw_lines.copy()
         clone.pictures = self.pictures.copy()
         clone.doc_path = None
+
+    def pict_migrate(self, new_path: str):
+        """将本文档中所有图片的源迁移到新目录"""
+        # todo::添加测试
+        for pict in self.pictures:
+            pict.migrate(new_path)
+            line = self.raw_lines[pict.location]
+            # todo::可能会识别到其他标签尾，也不能正常识别同一行的第二张图片
+            img_start = line.find("<img")
+            img_end = line.find("/>")
+            # 将新的图像路径插入文档行
+            self.raw_lines[pict.location] \
+                = line[:img_start] + pict.raw_tag + line[img_end+2:]

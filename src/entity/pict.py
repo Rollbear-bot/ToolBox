@@ -21,7 +21,13 @@ class Pict:
         src = clip[0]
         clip = clip[1].split('\" style=\"')
         alt = clip[0]
-        clip = clip[1].split('\" /')
-        style = clip[0]
+        tmp = alt.rfind('/>')
+        if tmp != -1:
+            alt = alt[:tmp-3]
+        # style在图片标签中是可缺省的
+        style = ""
+        if len(clip) > 1:
+            clip = clip[1].split('\" /')
+            style = clip[0]
         return src, alt, style
 

@@ -4,17 +4,16 @@
 # @Filename: converter.py
 
 
-from entity.md_topic import Topic
+from entity.topic import Topic
 
 
-def scanner(md_file: open):
+def scanner(lines: list):
     """
     Markdown格式解析器
     分析标题、子标题、正文之间的关系，构造一个树形结构
-    :param md_file: open方法返回的一个文本文件
+    :param lines: 以行为元素的列表
     :return: 解析产生的Topic对象
     """
-    lines = md_file.readlines()
     root_topic = Topic(lines[0])  # 文件的第一行应当是主标题
     lines.remove(lines[0])
 

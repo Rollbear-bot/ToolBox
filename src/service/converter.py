@@ -52,7 +52,7 @@ def scanner(lines: list):
 
 def printer(root: Topic):
     """
-    将解析树转换成Markdown文本
+    将解析树转换成Markdown文本行
     :param root: 顶级标题
     :return: 每行文本作为元素的列表
     """

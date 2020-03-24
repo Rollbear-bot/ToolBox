@@ -36,7 +36,6 @@ def scanner(md_file: open):
                 cur_topic = temp  # 话题指针移动到新标题
 
             else:
-                # 扫描到高级标题，退栈
                 topic_level = temp.level
                 # 回溯到该标题的同级标题
                 while cur_topic.level > topic_level:

@@ -37,7 +37,6 @@ def main():
 
     md_the_file = open(file_path, 'r', encoding='utf8')  # 以只读方式打开
     result = scanner(md_file=md_the_file)
-    # topic_list(result)
     lt = printer(result)
     for line in lt:
         print(line, end='')

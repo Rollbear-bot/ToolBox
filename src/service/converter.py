@@ -7,13 +7,14 @@
 from entity.topic import Topic
 
 
-def scanner(lines: list):
+def scanner(p_lines: list):
     """
     Markdown格式解析器
     分析标题、子标题、正文之间的关系，构造一个树形结构
-    :param lines: 以行为元素的列表
+    :param p_lines: 以行为元素的列表
     :return: 解析产生的Topic对象
     """
+    lines = p_lines.copy()
     root_topic = Topic(lines[0])  # 文件的第一行应当是主标题
     lines.remove(lines[0])
 

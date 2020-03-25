@@ -50,39 +50,3 @@ def scanner(p_lines: list):
     # 解析完成，返回一个Topic对象
     return root_topic
 
-
-def printer(root: Topic):
-    """
-    将解析树转换成Markdown文本行
-    :param root: 顶级标题
-    :return: 每行文本作为元素的列表
-    """
-    return _printer_recursion(root, [])
-
-
-def _printer_recursion(cur: Topic, result: list):
-    """对printer的递归实现
-    （对结点前序遍历的递归实现）"""
-    if not isinstance(cur, Topic):
-        return result
-
-    result.append(cur.raw_title)  # 加载标题
-    for line in cur.text:
-        result.append(line)  # 加载正文
-    if len(cur.sub_topic) == 0:  # 递归出口
-        return result
-
-    for topic in cur.sub_topic:
-        result = _printer_recursion(topic, result)
-    return result  # 遍历完成
-
-
-
-
-
-
-
-
-
-
-

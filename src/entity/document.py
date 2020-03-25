@@ -72,3 +72,13 @@ class Document:
                 = line[:img_start] + pict.raw_tag + line[img_end+2:]
             # 用更改后的文档行重新生成话题树
             self.root_topic = scanner(self.raw_lines)
+
+    def save(self, path: str):
+        """
+        将对象以文本文件方式保存
+        :param path: 文件保存路径
+        """
+        file = open(path, 'w', encoding='utf8')
+        file.writelines(self.raw_lines)
+        file.close()
+

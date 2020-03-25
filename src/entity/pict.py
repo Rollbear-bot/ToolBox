@@ -51,8 +51,11 @@ class Pict:
         """
         clip = raw_tag.split('src=\"')
         clip = clip[1].split('\" alt=\"')
-        src_dir = clip[0]
-        src_pict_name = src_dir.rsplit("/")[1]
+
+        cut = clip[0].rfind("/")
+        src_pict_name = clip[0][cut+1:]
+        src_dir = clip[0][:cut]
+
         clip = clip[1].split('\" style=\"')
         alt = clip[0]
         tmp = alt.rfind('/>')
@@ -61,7 +64,7 @@ class Pict:
         # style在图片标签中是可缺省的
         style = ""
         if len(clip) > 1:
-            clip = clip[1].split('\" /')
+            clip = clip[1].split('\" />')
             style = clip[0]
         return src_dir, src_pict_name, alt, style
 
@@ -76,8 +79,11 @@ class Pict:
         """
         clip = tag.split("](")
         alt = clip[0][2:]
-        src_clip = clip[1][:-1].rsplit("/")
-        src_dir = src_clip[0]
-        src_pict_name = src_clip[1]
+
+        src_clip = clip[1][:-1]
+        cut = src_clip.rfind("/")
+        src_dir = src_clip[:cut]
+        src_pict_name = src_clip[cut+1:]
+
         style = ""
         return src_dir, src_pict_name, alt, style

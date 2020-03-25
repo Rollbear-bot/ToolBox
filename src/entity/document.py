@@ -29,17 +29,19 @@ class UnexpectedFile(Exception):
 
 class Document:
     """Markdown文档对象"""
-    def __init__(self, file_path=None):
+    def __init__(self, file_path=None, encoding="utf8"):
         if file_path:
             if not file_path.endswith(".md"):
                 raise UnexpectedFile  # 如果传入的不是md文件则抛出异常
             # 打开文件
-            lines = open(file_path, 'r', encoding='utf8').readlines()
+            file = open(file_path, 'r', encoding=encoding)
+            lines = file.readlines()
             if not lines[0].startswith("# "):
                 raise UnexpectedFile  # 文档的第一行必须是顶级标题，否则无法创建根话题
             self.root_topic = scanner(lines)
             self.pictures = pict_searcher(lines)
             self.doc_path = file_path
+            file.close()
 
     def __str__(self):
         return self.root_topic.title

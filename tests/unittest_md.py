@@ -7,23 +7,8 @@ from service.searcher import *
 from entity.document import Document
 
 
-def load_test_file_lines():
-    return open('notes.md', 'r', encoding='utf8').readlines()
-
-
 def load_test_file_path():
     return 'notes.md'
-
-
-class TestSearcher(unittest.TestCase):
-    """元素搜索测试"""
-    def test_pict_search(self):
-        """测试图片tag的定位"""
-        lines = load_test_file_lines()
-        result = pict_searcher(lines)
-        self.assertEqual(result[2].style, "zoom: 80%;")
-        self.assertEqual(result[2].src_pict_name, 'web服务器和web框架.png')
-        self.assertEqual(result[3].style, "zoom:67%;")
 
 
 class TestMigrate(unittest.TestCase):
@@ -37,6 +22,14 @@ class TestMigrate(unittest.TestCase):
         for pict in doc.pictures:
             self.assertEqual(pict.src_dir, new_path)
             self.assertTrue(new_path in raw_lines[pict.location])
+
+    def test_pict_migrate_case_2(self):
+        doc1 = Document(load_test_file_path())
+        doc1.pict_migrate("./pict")
+        doc1.save("./t.md")
+        doc2 = Document("./t.md")
+        for pict in doc2.pictures:
+            self.assertEqual(pict.src_dir, "./pict")
 
 
 class TestDocObject(unittest.TestCase):

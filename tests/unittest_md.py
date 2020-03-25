@@ -31,9 +31,9 @@ class TestSearcher(unittest.TestCase):
         """测试图片tag的定位"""
         lines = load_test_file_lines()
         result = pict_searcher(lines)
-        self.assertEqual(result[0].style, "zoom: 80%;")
-        self.assertEqual(result[0].src, '其他笔记.assets/web服务器和web框架.png')
-        self.assertEqual(result[1].style, "zoom:67%;")
+        self.assertEqual(result[2].style, "zoom: 80%;")
+        self.assertEqual(result[2].src_pict_name, 'web服务器和web框架.png')
+        self.assertEqual(result[3].style, "zoom:67%;")
 
 
 class TestMigrate(unittest.TestCase):
@@ -44,7 +44,7 @@ class TestMigrate(unittest.TestCase):
         new_path = "./pict"
         doc.pict_migrate(new_path)
         for pict in doc.pictures:
-            self.assertEqual(pict.src, new_path)
+            self.assertEqual(pict.src_dir, new_path)
             self.assertTrue(new_path in doc.raw_lines[pict.location])
 
 

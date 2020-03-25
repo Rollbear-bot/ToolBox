@@ -69,7 +69,7 @@ class Document:
             img_end = line.find("/>")
             # 将新的图像路径插入文档行
             self.raw_lines[pict.location] \
-                = line[:img_start] + pict.raw_tag + line[img_end+2:]
+                = line[:img_start] + pict.raw_tag() + line[img_end+2:]
             # 用更改后的文档行重新生成话题树
             self.root_topic = scanner(self.raw_lines)
 

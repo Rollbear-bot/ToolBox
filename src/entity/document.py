@@ -52,14 +52,14 @@ class Document:
     def copy(self):
         """深拷贝一个Document对象"""
         clone = Document()
-        clone.root_topic = self.root_topic
         clone.raw_lines = self.raw_lines.copy()
         clone.pictures = self.pictures.copy()
+        # 拷贝对象应该重新生成话题树
+        clone.root_topic = scanner(self.raw_lines)
         clone.doc_path = None
 
     def pict_migrate(self, new_path: str):
         """将本文档中所有图片的源迁移到新目录"""
-        # todo::添加测试
         for pict in self.pictures:
             pict.migrate(new_path)
             line = self.raw_lines[pict.location]
@@ -69,3 +69,5 @@ class Document:
             # 将新的图像路径插入文档行
             self.raw_lines[pict.location] \
                 = line[:img_start] + pict.raw_tag + line[img_end+2:]
+            # 用更改后的文档行重新生成话题树
+            self.root_topic = scanner(self.raw_lines)

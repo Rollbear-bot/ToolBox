@@ -31,16 +31,6 @@ class Pict:
     def migrate(self, new_dir: str):
         """将当前图片的源迁移到另一个目录"""
         self.src_dir = new_dir
-        # 构造新的图片标签
-        '''
-        self.raw_tag = "<img src=\"" \
-                       + self.src_dir + "/" + self.src_pict_name \
-                       + "\" alt=\"" + self.alt
-        if self.style == "":
-            self.raw_tag += "\" />"
-        else:
-            self.raw_tag += "\" style=\"" + self.style + "\" />"
-        '''
 
     @staticmethod
     def pict_tag_parser(raw_tag: str):
@@ -52,9 +42,7 @@ class Pict:
         clip = raw_tag.split('src=\"')
         clip = clip[1].split('\" alt=\"')
 
-        cut = clip[0].rfind("/")
-        src_pict_name = clip[0][cut+1:]
-        src_dir = clip[0][:cut]
+        src_dir, src_pict_name = Pict.path_parser(clip[0])
 
         clip = clip[1].split('\" style=\"')
         alt = clip[0]
@@ -81,9 +69,18 @@ class Pict:
         alt = clip[0][2:]
 
         src_clip = clip[1][:-1]
-        cut = src_clip.rfind("/")
-        src_dir = src_clip[:cut]
-        src_pict_name = src_clip[cut+1:]
+        src_dir, src_pict_name = Pict.path_parser(src_clip)
 
         style = ""
         return src_dir, src_pict_name, alt, style
+
+    @staticmethod
+    def path_parser(img_path: str):
+        """从图片源路径中解析出目录路径和文件名"""
+        cut = "/"
+        if "\\" in img_path:
+            cut = "\\"
+        cut_index = img_path.rfind(cut)
+        src_dir = img_path[:cut_index]
+        src_pict_name = img_path[cut_index + 1:]
+        return src_dir, src_pict_name

@@ -57,6 +57,7 @@ class Document:
         # 拷贝对象应该重新生成话题树
         clone.root_topic = scanner(self.raw_lines)
         clone.doc_path = None
+        return clone
 
     def pict_migrate(self, new_path: str):
         """将本文档中所有图片的源迁移到新目录"""

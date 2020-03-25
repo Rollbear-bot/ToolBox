@@ -20,8 +20,7 @@ def main():
         print('你打开的不是markdown文件，请重新选择')
         file_path = filedialog.askopenfilename()
 
-    md_the_file = open(file_path, 'r', encoding='utf8')  # 以只读方式打开
-    doc = document.Document(md_the_file)
+    doc = document.Document(file_path)
     doc.show_all_topic()
 
 

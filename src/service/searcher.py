@@ -20,7 +20,6 @@ def pict_searcher(lines: iter):
     """
     result = []
     for index in range(len(lines)):
-        cur_pict = None
         # 通过img标签的方式搜索
         location = lines[index].find("<img ")
         if location != -1:

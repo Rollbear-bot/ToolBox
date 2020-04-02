@@ -12,7 +12,7 @@ class Pict:
         self.location = location
         if classic:
             self.src_dir, self.src_pict_name, self.alt, self.style \
-                = Pict.pict_tag_parser_classic(tag)
+                = Pict.pict_tag_parser(tag, classic_mode=True)
         else:
             self.src_dir, self.src_pict_name, self.alt, self.style \
                 = Pict.pict_tag_parser(tag)
@@ -33,46 +33,44 @@ class Pict:
         self.src_dir = new_dir
 
     @staticmethod
-    def pict_tag_parser(raw_tag: str):
+    def pict_tag_parser(raw_tag: str, classic_mode=False):
         """
         图片标签解析器
-        :param raw_tag: 原始图片标签
-        :return: 四元组（图片源目录，图片源文件名，图片注释，图片缩放数值）
-        """
-        clip = raw_tag.split('src=\"')
-        clip = clip[1].split('\" alt=\"')
-
-        src_dir, src_pict_name = Pict.path_parser(clip[0])
-
-        clip = clip[1].split('\" style=\"')
-        alt = clip[0]
-        tmp = alt.rfind('/>')
-        if tmp != -1:
-            alt = alt[:tmp-3]
-        # style在图片标签中是可缺省的
-        style = ""
-        if len(clip) > 1:
-            clip = clip[1].split('\" />')
-            style = clip[0]
-        return src_dir, src_pict_name, alt, style
-
-    @staticmethod
-    def pict_tag_parser_classic(tag: str):
-        """
-        经典标签解析器
-        同时将经典标签转化为html风格
         经典风格图片标签：![alt_str](image_path)
-        :param tag: 经典标签
+        html风格图片标签：<img src=... alt=... style=... />
+        :param raw_tag: 原始图片标签
+        :param classic_mode: 标记是否使用经典风格
         :return: 四元组（图片源目录，图片源文件名，图片注释，图片缩放数值）
         """
-        clip = tag.split("](")
-        alt = clip[0][2:]
+        if classic_mode:
+            # 使用经典标记风格解析
+            clip = raw_tag.split("](")
+            alt = clip[0][2:]
 
-        src_clip = clip[1][:-1]
-        src_dir, src_pict_name = Pict.path_parser(src_clip)
+            src_clip = clip[1][:-1]
+            src_dir, src_pict_name = Pict.path_parser(src_clip)
 
-        style = ""
-        return src_dir, src_pict_name, alt, style
+            style = ""
+            return src_dir, src_pict_name, alt, style
+
+        else:
+            # 使用html风格标记解析
+            clip = raw_tag.split('src=\"')
+            clip = clip[1].split('\" alt=\"')
+
+            src_dir, src_pict_name = Pict.path_parser(clip[0])
+
+            clip = clip[1].split('\" style=\"')
+            alt = clip[0]
+            tmp = alt.rfind('/>')
+            if tmp != -1:
+                alt = alt[:tmp-3]
+            # style在图片标签中是可缺省的
+            style = ""
+            if len(clip) > 1:
+                clip = clip[1].split('\" />')
+                style = clip[0]
+            return src_dir, src_pict_name, alt, style
 
     @staticmethod
     def path_parser(img_path: str):

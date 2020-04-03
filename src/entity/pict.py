@@ -22,7 +22,7 @@ class Pict:
         tag = "<img src=\"" \
             + self.src_dir + "/" + self.src_pict_name \
             + "\" alt=\"" + self.alt
-        if self.style == "":
+        if self.style is None or self.style == "":
             tag += "\" />"
         else:
             tag += "\" style=\"" + self.style + "\" />"

@@ -32,7 +32,7 @@ def valid_board(c: list, row_length: int):
                     return False
     if 0 in c:
         return "partial solution"  # the partial solution is found, continue
-    return True  # the final solution is found, end
+    return True  # one final solution is found
 
 
 def k_queens(n_queens: int):
@@ -41,8 +41,9 @@ def k_queens(n_queens: int):
     :param n_queens: number of queens
     :return: solutions, queens' location on each row
     """
-    res = []
-    c = list(range(n_queens))  # location of the queens on the rows of the board
+    res = []  # array of solutions of the problem
+    # init a array, location of the queens on the rows of the board
+    c = list(range(n_queens))
     for k in range(1, n_queens+1):
         c[k-1] = 0  # no any queen on the board
     flag = False  # notice that if the solution is found
@@ -59,7 +60,6 @@ def k_queens(n_queens: int):
         c[k-1] = 0
         k -= 1  # traceback
 
-    # print("no solution!")
     return res
 
 

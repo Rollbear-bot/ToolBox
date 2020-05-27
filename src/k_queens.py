@@ -2,7 +2,7 @@
 # @Time: 2020/5/27 11:23
 # @Author: Rollbear
 # @Filename: k_queens.py
-# 四皇后问题（回溯法）
+# k皇后问题（回溯法）
 
 
 def valid_board(c: list, row_length: int):
@@ -52,7 +52,7 @@ def k_queens(n_queens: int):
         while c[k-1] <= n_queens-1:
             c[k-1] = c[k-1] + 1
             if valid_board(c, row_length=n_queens) is True:
-                res.append(c)  # print a final solution
+                res.append(c.copy())  # one of the final solutions
             if valid_board(c, row_length=n_queens) == "partial solution":
                 k += 1  # go forward
                 continue

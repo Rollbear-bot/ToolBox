@@ -14,7 +14,7 @@ def valid_board(c: list, row_length: int):
     """
     tmp = c.copy()
     if 0 in tmp:
-        tmp = tmp[:tmp.index(0)]
+        tmp = tmp[:tmp.index(0)]  # clear the "0" (unsettled rows)
 
     # value in the list must be unique
     if len(set(tmp)) != len(tmp):
@@ -32,7 +32,7 @@ def valid_board(c: list, row_length: int):
                     return False
     if 0 in c:
         return "partial solution"  # the partial solution is found, continue
-    return True  # one final solution is found
+    return True  # one of the final solutions is found
 
 
 def k_queens(n_queens: int):
@@ -46,7 +46,7 @@ def k_queens(n_queens: int):
     c = list(range(n_queens))
     for k in range(1, n_queens+1):
         c[k-1] = 0  # no any queen on the board
-    flag = False  # notice that if the solution is found
+    # flag = False  # notice that if the solution is found
 
     k = 1  # row id
     while k >= 1:
@@ -57,7 +57,7 @@ def k_queens(n_queens: int):
             if valid_board(c, row_length=n_queens) == "partial solution":
                 k += 1  # go forward
                 continue
-        c[k-1] = 0
+        c[k-1] = 0  # clear the choice on current row
         k -= 1  # traceback
 
     return res
@@ -66,7 +66,8 @@ def k_queens(n_queens: int):
 def main():
     res = k_queens(n_queens=4)
     print(f"number of solutions: {len(res)}")
-    print(res)
+    for r in res:
+        print(r)
 
 
 if __name__ == '__main__':

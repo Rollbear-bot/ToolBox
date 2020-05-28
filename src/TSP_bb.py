@@ -4,7 +4,7 @@
 # @Filename: TSP_bb.py
 # TSP: branch and bound method
 
-MAXINT = 65563
+INFINITY = 65563
 
 
 def calc_bound(matrix: list):
@@ -75,19 +75,20 @@ def tsp_bb(matrix: list):
         row_index = 0
         col_index = cur_mat[row_index].index(0)
 
+        # left child means the situation of choosing a edge
         # pop a row and a column from current matrix
-        # the new matrix become a child_node
+        # the new matrix becomes a child_node
         left_child = [row.copy() for row in cur_mat]  # make a copy of cur_mat
         left_child.pop(row_index)
         for row_i, _ in enumerate(left_child):
             left_child[row_i].pop(col_index)
         lc_col_id = col_id.copy()
-        lc_col_id.pop(col_index)  # remove the column id
+        lc_col_id.pop(col_index)  # remove the column id of removed column
 
         lc_edges = edges.copy()
         lc_edges.append((row_flag, col_id[col_index]))
 
-        # block some edges in order to avoid making loops
+        # block some edges in order to avoid making loops (mark them as INFINITY)
         lc_edges = sort_edges(lc_edges)
         if row_flag < 3:
             for edge in [(edge[1], lc_edges[0][0]) for edge in lc_edges[-1::-1]]:
@@ -97,16 +98,18 @@ def tsp_bb(matrix: list):
                 except ValueError:
                     c = -1
                 if r >= 0 and c != -1:
-                    left_child[r][c] = MAXINT
+                    left_child[r][c] = INFINITY
 
         left_child_bound, left_child = calc_bound(left_child)
 
+        # right child means the situation of not choosing a edge
         right_child = [row.copy() for row in cur_mat]  # make a copy of cur_mat
-        right_child[row_index][col_index] = MAXINT
+        right_child[row_index][col_index] = INFINITY
         right_child_bound, right_child = calc_bound(right_child)
 
         # minimize the bound, choice the min_bound branch
         if left_child_bound < right_child_bound:
+            # the left branch is chosen
             # update column id
             col_id = lc_col_id.copy()
             # record the invalid edge
@@ -117,6 +120,7 @@ def tsp_bb(matrix: list):
             cur_mat = left_child
 
         else:
+            # the right branch is chosen
             cur_bound += right_child_bound
             cur_mat = right_child
 
@@ -124,11 +128,11 @@ def tsp_bb(matrix: list):
 
 
 def main():
-    m = [[MAXINT, 17, 7, 35, 18],
-         [9, MAXINT, 5, 14, 19],
-         [29, 24, MAXINT, 30, 12],
-         [27, 21, 25, MAXINT, 48],
-         [15, 16, 28, 18, MAXINT]]
+    m = [[INFINITY, 17, 7, 35, 18],
+         [9, INFINITY, 5, 14, 19],
+         [29, 24, INFINITY, 30, 12],
+         [27, 21, 25, INFINITY, 48],
+         [15, 16, 28, 18, INFINITY]]
 
     solution, bound = tsp_bb(m)
 

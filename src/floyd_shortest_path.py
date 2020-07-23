@@ -3,6 +3,8 @@
 # @Author: Rollbear
 # @Filename: shortest_path.py
 
+INFINITY = 65535
+
 
 def shortest_path_floyd(d_0: list):
     """弗洛伊德算法，点对最短路径问题"""
@@ -33,10 +35,15 @@ def shortest_path_floyd(d_0: list):
 
 def main():
     # 使用65535表示无穷大
-    d_0 = [[0, 7, 6, 1],
-           [65535, 0, 65535, 9],
-           [1, 65535, 0, 65535],
-           [4, 4, 2, 0]]
+    d_0 = [[0, 8, INFINITY, 5, INFINITY, INFINITY, 6, INFINITY, INFINITY],
+           [8, 0, 10, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY, INFINITY],
+           [INFINITY, 10, 0, INFINITY, 13, 13, INFINITY, INFINITY, INFINITY],
+           [5, INFINITY, INFINITY, 0, 6, INFINITY, 7, 8, INFINITY],
+           [INFINITY, INFINITY, 13, 6, 0, INFINITY, INFINITY, INFINITY, 12],
+           [INFINITY, INFINITY, 13, INFINITY, INFINITY, 0, INFINITY, INFINITY, 15],
+           [6, INFINITY, INFINITY, 7, INFINITY, INFINITY, 0, 11, INFINITY],
+           [INFINITY, INFINITY, INFINITY, 8, INFINITY, INFINITY, 11, 0, 16],
+           [INFINITY, INFINITY, INFINITY, INFINITY, 12, 15, INFINITY, 16, 0]]
     res = shortest_path_floyd(d_0)
 
 
